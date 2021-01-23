@@ -62,7 +62,6 @@ public:
 
 private:
     size_t width, height;
-    //std::vector<std::array<float, 3>> image_;
     std::vector<Vec3<float>> image_;
 };
 

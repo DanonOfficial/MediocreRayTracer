@@ -14,7 +14,7 @@
 #include <cmath>
 #include <iostream>
 #include <iterator>
-
+#include <array>
 /// Vector in 3 dimensions, with basics operators overloaded.
 template<typename T>
 class Vec3 {
@@ -246,41 +246,52 @@ protected:
     T m_p[3];
 };
 
-template<class T>
-inline T length(const Vec3<T> &a) {
-    return a.length();
+namespace std {
+    template<typename T>
+    struct tuple_size<Vec3<T>> : std::integral_constant<size_t, 3> {
+    };
+    template<typename T, int I>
+    struct tuple_element<I, Vec3<T>> {
+        using type = T;
+    };
 }
 
-template<class T>
-inline T dist(const Vec3<T> &a, const Vec3<T> &b) {
-    return (a - b).length();
-}
+namespace vec3 {
+    template<class T>
+    inline T length(const Vec3<T> &a) {
+        return a.length();
+    }
 
-template<class T>
-inline T dot(const Vec3<T> &a, const Vec3<T> &b) {
-    return (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]);
-}
+    template<class T>
+    inline T dist(const Vec3<T> &a, const Vec3<T> &b) {
+        return (a - b).length();
+    }
 
-template<class T>
-inline Vec3<T> cross(const Vec3<T> &a, const Vec3<T> &b) {
-    Vec3<T> r;
-    r[0] = a[1] * b[2] - a[2] * b[1];
-    r[1] = a[2] * b[0] - a[0] * b[2];
-    r[2] = a[0] * b[1] - a[1] * b[0];
-    return r;
-}
+    template<class T>
+    inline T dot(const Vec3<T> &a, const Vec3<T> &b) {
+        return (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]);
+    }
 
-template<class T>
-inline Vec3<T> normalize(const Vec3<T> &x) {
-    Vec3<T> n(x);
-    n.normalize();
-    return n;
-}
+    template<class T>
+    inline Vec3<T> cross(const Vec3<T> &a, const Vec3<T> &b) {
+        Vec3<T> r;
+        r[0] = a[1] * b[2] - a[2] * b[1];
+        r[1] = a[2] * b[0] - a[0] * b[2];
+        r[2] = a[0] * b[1] - a[1] * b[0];
+        return r;
+    }
 
-template<class T>
-inline Vec3<T> mix(const Vec3<T> &u, const Vec3<T> &v, float alpha) {
-    return (u * (T(1.0) - alpha) + v * alpha);
-}
+    template<class T>
+    inline Vec3<T> normalize(const Vec3<T> &x) {
+        Vec3<T> n(x);
+        n.normalize();
+        return n;
+    }
+
+    template<class T>
+    inline Vec3<T> mix(const Vec3<T> &u, const Vec3<T> &v, float alpha) {
+        return (u * (T(1.0) - alpha) + v * alpha);
+    }
 
 /**
  * Cartesion to polar coordinates conversion.
@@ -289,31 +300,31 @@ inline Vec3<T> mix(const Vec3<T> &u, const Vec3<T> &v, float alpha) {
  * [1] = angle with z-axis
  * [2] = angle of projection into x,y, plane with x-axis
  */
-template<class T>
-inline Vec3<T> cartesianToPolar(const Vec3<T> &v) {
-    Vec3<T> polar;
-    polar[0] = length(v);
+    template<class T>
+    inline Vec3<T> cartesianToPolar(const Vec3<T> &v) {
+        Vec3<T> polar;
+        polar[0] = length(v);
 
-    if (v[2] > T(0.0)) {
-        polar[1] = (T) atan(sqrt(v[0] * v[0] + v[1] * v[1]) / v[2]);
-    } else if (v[2] < T(0.0)) {
-        polar[1] = (T) atan(sqrt(v[0] * v[0] + v[1] * v[1]) / v[2]) + M_PI;
-    } else {
-        polar[1] = T(M_PI) * T(0.5);
+        if (v[2] > T(0.0)) {
+            polar[1] = (T) atan(sqrt(v[0] * v[0] + v[1] * v[1]) / v[2]);
+        } else if (v[2] < T(0.0)) {
+            polar[1] = (T) atan(sqrt(v[0] * v[0] + v[1] * v[1]) / v[2]) + M_PI;
+        } else {
+            polar[1] = T(M_PI) * T(0.5);
+        }
+
+
+        if (v[0] > T(0.0)) {
+            polar[2] = (T) atan(v[1] / v[0]);
+        } else if (v[0] < T(0.0)) {
+            polar[2] = (T) atan(v[1] / v[0]) + M_PI;
+        } else if (v[1] > T(0.0)) {
+            polar[2] = T(M_PI) * T(0.5);
+        } else {
+            polar[2] = -T(M_PI) * T(0.5);
+        }
+        return polar;
     }
-
-
-    if (v[0] > T(0.0)) {
-        polar[2] = (T) atan(v[1] / v[0]);
-    } else if (v[0] < T(0.0)) {
-        polar[2] = (T) atan(v[1] / v[0]) + M_PI;
-    } else if (v[1] > T(0.0)) {
-        polar[2] = T(M_PI) * T(0.5);
-    } else {
-        polar[2] = -T(M_PI) * T(0.5);
-    }
-    return polar;
-}
 
 /**
  * Polar to cartesion coordinates
@@ -322,44 +333,39 @@ inline Vec3<T> cartesianToPolar(const Vec3<T> &v) {
  * [1] = angle with z-axis
  * [2] = angle of projection into x,y, plane with x-axis
  */
-template<class T>
-inline Vec3<T> polarToCartesian(const Vec3<T> &v) {
-    Vec3<T> cart;
-    cart[0] = v[0] * (T) sin(v[1]) * (T) cos(v[2]);
-    cart[1] = v[0] * (T) sin(v[1]) * (T) sin(v[2]);
-    cart[2] = v[0] * (T) cos(v[1]);
-    return cart;
+    template<class T>
+    inline Vec3<T> polarToCartesian(const Vec3<T> &v) {
+        Vec3<T> cart;
+        cart[0] = v[0] * (T) sin(v[1]) * (T) cos(v[2]);
+        cart[1] = v[0] * (T) sin(v[1]) * (T) sin(v[2]);
+        cart[2] = v[0] * (T) cos(v[1]);
+        return cart;
+    }
+
+    template<class T>
+    inline Vec3<T> projectOntoVector(const Vec3<T> &v1, const Vec3<T> &v2) {
+        return v2 * dotProduct(v1, v2);
+    }
+
+    template<class T>
+    inline Vec3<T> operator*(const T &s, const Vec3<T> &P) {
+        return (P * s);
+    }
+
+    template<class T>
+    std::ostream &operator<<(std::ostream &output, const Vec3<T> &v) {
+        output << v[0] << " " << v[1] << " " << v[2];
+        return output;
+    }
+
+    template<class T>
+    std::istream &operator>>(std::istream &input, Vec3<T> &v) {
+        input >> v[0] >> v[1] >> v[2];
+        return input;
+    }
+
+    typedef Vec3<float> Vec3f;
+    typedef Vec3<double> Vec3d;
+    typedef Vec3<int> Vec3i;
+
 }
-
-template<class T>
-inline Vec3<T> projectOntoVector(const Vec3<T> &v1, const Vec3<T> &v2) {
-    return v2 * dotProduct(v1, v2);
-}
-
-template<class T>
-inline Vec3<T> operator*(const T &s, const Vec3<T> &P) {
-    return (P * s);
-}
-
-template<class T>
-std::ostream &operator<<(std::ostream &output, const Vec3<T> &v) {
-    output << v[0] << " " << v[1] << " " << v[2];
-    return output;
-}
-
-template<class T>
-std::istream &operator>>(std::istream &input, Vec3<T> &v) {
-    input >> v[0] >> v[1] >> v[2];
-    return input;
-}
-
-namespace std {
-    template <typename T> struct tuple_size<Vec3<T>> : std::integral_constant<size_t, 3> { };
-    template <typename T, int I> struct tuple_element<I,Vec3<T>> { using type = T; };
-}
-
-typedef Vec3<float> Vec3f;
-typedef Vec3<double> Vec3d;
-typedef Vec3<int> Vec3i;
-
-
