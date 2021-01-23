@@ -10,7 +10,7 @@
 #include "Ray.h"
 class Camera {
 public:
-    Camera(const Vec3<float> &pos = {0.f, 0.f, -1.f},const Vec3<float> &lookDirection = {0.f, 0.f, 0.f},const Vec3<float> &up = {0.f, 1.f, 0.f}, float aspectRatio = 1.f, float fov = 60.f);
+    Camera(const Vec3<float> &pos = {0.f, 0.f, 0.f},const Vec3<float> &lookDirection = {0.f, 0.f, -1.f},const Vec3<float> &up = {0.f, 1.f, 0.f}, float aspectRatio = 3.f/2.f, float fov = 45.f);
 
     Ray castRay(float u, float v) const;
 private:

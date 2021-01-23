@@ -13,6 +13,8 @@ public:
 
     std::optional<Vec3<float>> intersect(const Vec3<float> &p0, const Vec3<float> &p1, const Vec3<float> &p2) const;
 
+    Vec3<float> getOrigin() const{ return origin_m;};
+    Vec3<float> getDirection() const{return direction_m;};
 private:
     Vec3<float> origin_m;
     Vec3<float> direction_m;
