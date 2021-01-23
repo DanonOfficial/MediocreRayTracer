@@ -2,6 +2,7 @@
 #include "Image.h"
 #include "Scene.h"
 #include "RayCaster.h"
+#include "Mesh.h"
 
 int main(int argc, char *argv[]) {
     size_t width, height;
@@ -21,7 +22,10 @@ int main(int argc, char *argv[]) {
                                          {1.f,  0.f,  -1.f},
                                          {0.f,  1.f,  -1.f}};
     std::vector<Vec3<size_t>> triangles = {{0, 1, 2}};
-    Scene scene(vertices, triangles);
+    Scene scene;
+    Mesh meshForScene;
+    meshForScene.loadOFF("resources/model.off");
+    scene.addMesh(meshForScene);
     RayCaster renderer;
     renderer.render(scene, image);
     image.writeImage(path);

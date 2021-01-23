@@ -4,26 +4,22 @@
 
 #ifndef RAYTRACER_SCENE_H
 #define RAYTRACER_SCENE_H
+
 #include <vector>
 #include "thirdParty/Vec3.h"
 #include "Camera.h"
+#include "Mesh.h"
+
 class Scene {
 public:
     Scene() = default;
-    Scene(const std::vector<Vec3<float>> &vertices, const std::vector<Vec3<size_t>> &triangles);
-
-private:
-    std::vector<Vec3<float>> vertices_m;
-    std::vector<Vec3<size_t>> triangles_m;
-public:
-    const std::vector<Vec3<float>> &getVertices() const;
-
-    const std::vector<Vec3<size_t>> &getTriangles() const;
 
     const Camera &getCamera() const;
 
+    const std::vector<Mesh> &getMeshes() const;
+    void addMesh(const Mesh& mesh);
 private:
-
+    std::vector<Mesh> meshes_m;
     Camera camera_m;
 };
 

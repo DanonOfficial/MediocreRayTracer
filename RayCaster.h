@@ -14,7 +14,15 @@ public:
     void render(const Scene &scene, Image &image) const;
 
 private:
-
+    struct IntersectionData {
+        size_t meshIndex;
+        size_t triangleIndex;
+        float u;
+        float v;
+        float t;
+    };
+    std::optional<IntersectionData> findRayIntersection(const std::vector<Mesh> &meshes, const Ray &ray) const;
+    Vec3<float> shade(const Scene &scene, IntersectionData intersectionData) const;
 };
 
 
