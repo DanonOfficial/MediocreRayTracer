@@ -18,7 +18,7 @@ public:
     }
 
     Image(size_t width, size_t height, float color) : width_m(width), height_m(height), image_m(width * height,
-                                                                                            {color, color, color}) {
+                                                                                                {color, color, color}) {
 
     }
 

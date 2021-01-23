@@ -12,6 +12,7 @@
 class RayCaster {
 public:
     void render(const Scene &scene, Image &image) const;
+
 private:
 
 };
