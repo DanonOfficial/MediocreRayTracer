@@ -33,11 +33,7 @@ RayCaster::findRayIntersection(const std::vector<Mesh> &meshes, const Ray &ray) 
                 if (std::fabs(t) < distance) {
                     hasIntersection = true;
                     distance = std::fabs(t);
-                    result.u = u;
-                    result.v = v;
-                    result.t = t;
-                    result.triangleIndex = i;
-                    result.meshIndex = meshIndex;
+                    result = {meshIndex, i, u, v, t};
                 }
             }
         }
@@ -52,7 +48,6 @@ RayCaster::findRayIntersection(const std::vector<Mesh> &meshes, const Ray &ray) 
 Vec3<float> RayCaster::shade(const Scene &scene, RayCaster::IntersectionData intersectionData) const {
     const auto& mesh = scene.getMeshes()[intersectionData.meshIndex];
     const auto& vertices = mesh.getVertices();
-    const auto& N = mesh.getNormals();
     auto &[p0, p1, p2] = mesh.getIndices()[intersectionData.triangleIndex];
     Vec3<float> hitNormal = normalize((1.f - intersectionData.u - intersectionData.v) * vertices[p0] + intersectionData.u * vertices[p1] + intersectionData.v * vertices[p2]);
     return Vec3f(0.5f, 0.5f, 0.5f) + hitNormal / 2.f;
