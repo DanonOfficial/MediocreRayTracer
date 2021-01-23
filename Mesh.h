@@ -4,10 +4,26 @@
 
 #ifndef RAYTRACER_MESH_H
 #define RAYTRACER_MESH_H
-
+#include <vector>
+#include "thirdParty/Vec3.h"
 
 class Mesh {
+public:
+    Mesh() = default;
 
+    void loadOFF(const std::string &path);
+
+    const std::vector<Vec3<float>> &getVertices() const;
+
+    const std::vector<Vec3<size_t>> &getIndices() const;
+
+    const std::vector<Vec3<float>> &getNormals() const;
+
+private:
+    std::vector<Vec3<float>> vertices_m;
+    std::vector<Vec3<size_t>> indices_m;
+    std::vector<Vec3<float>> normals_m;
+    void calculateNormals();
 };
 
 
