@@ -6,7 +6,7 @@
 #define RAYTRACER_SCENE_H
 #include <vector>
 #include "thirdParty/Vec3.h"
-
+#include "Camera.h"
 class Scene {
 public:
     Scene() = default;
@@ -15,11 +15,16 @@ public:
 private:
     std::vector<Vec3<float>> vertices_m;
     std::vector<Vec3<size_t>> triangles_m;
+public:
+    const std::vector<Vec3<float>> &getVertices() const;
 
-    Vec3<float> cameraPos_m = {0.f, 0.f, 0.f};
-    Vec3<float> cameraDirection_m = {0.f, 0.f, -1.f};
-    float fow_m = 45.f;
-    float aspectRation_m = 3.f / 2.f;
+    const std::vector<Vec3<size_t>> &getTriangles() const;
+
+    const Camera &getCamera() const;
+
+private:
+
+    Camera camera_m;
 };
 
 
