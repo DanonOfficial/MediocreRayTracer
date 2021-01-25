@@ -47,6 +47,9 @@ public:
     };
 
     inline Vec3 &operator=(const Vec3 &p) {
+        if(&p == this){
+            return *this;
+        }
         m_p[0] = p[0];
         m_p[1] = p[1];
         m_p[2] = p[2];
@@ -193,6 +196,7 @@ public:
         m_p[2] *= invL;
         return l;
     };
+
 
     inline void getTwoOrthogonals(Vec3 &u, Vec3 &v) const {
         if (fabs(m_p[0]) < fabs(m_p[1])) {
