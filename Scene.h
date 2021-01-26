@@ -9,6 +9,7 @@
 #include "thirdParty/Vec3.h"
 #include "Camera.h"
 #include "Mesh.h"
+#include "LightSource.h"
 
 class Scene {
 public:
@@ -17,9 +18,13 @@ public:
     const Camera &getCamera() const;
 
     const std::vector<Mesh> &getMeshes() const;
+    const std::vector<LightSource> &getLightSources() const;
     void addMesh(const Mesh& mesh);
+    void addLightSource(const LightSource& lightSource);
+
 private:
     std::vector<Mesh> meshes_m;
+    std::vector<LightSource> lightSources_m;
     Camera camera_m;
 };
 

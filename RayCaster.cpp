@@ -10,9 +10,9 @@ void RayCaster::render(const Scene &scene, Image &image) const {
     for (size_t i = 0; i < image.height(); i++) {
         #pragma omp parallel for default(none) shared(image, camera, scene, i)
         for (size_t j = 0; j < image.width(); j++) {
-            auto ray = camera.castRay(static_cast<float>(j) / image.width(), static_cast<float>(i) / image.height());
+            auto ray = camera.castRay(static_cast<float>(j) / image.width(), 1.f - static_cast<float>(i) / image.height());
             if(auto intersection = findRayIntersection(scene.getMeshes(), ray)){
-                image(i, j) = shade(scene, intersection.value());
+                image(j, i) = shade(scene, intersection.value());
             }
         }
     }
@@ -46,10 +46,22 @@ RayCaster::findRayIntersection(const std::vector<Mesh> &meshes, const Ray &ray) 
 }
 
 Vec3<float> RayCaster::shade(const Scene &scene, RayCaster::IntersectionData intersectionData) const {
-    const auto& mesh = scene.getMeshes()[intersectionData.meshIndex];
+    auto &[meshIndex, triangleIndex, u, v, _] = intersectionData;
+    const auto& mesh = scene.getMeshes()[meshIndex];
     const auto& vertices = mesh.getVertices();
-    auto &[p0, p1, p2] = mesh.getIndices()[intersectionData.triangleIndex];
-    Vec3<float> hitNormal = normalize((1.f - intersectionData.u - intersectionData.v) * vertices[p0] + intersectionData.u * vertices[p1] + intersectionData.v * vertices[p2]);
-    return Vec3f(0.5f, 0.5f, 0.5f) + hitNormal / 2.f;
-
+    const auto& normals = mesh.getNormals();
+    auto &[p0, p1, p2] = mesh.getIndices()[triangleIndex];
+    Vec3<float> hitNormal = normalize((1.f - u - v) * normals[p0] + u * normals[p1] + v * normals[p2]);
+    Vec3<float> hitPos = (1.f - u - v) * vertices[p0] + u * vertices[p1] + v * vertices[p2];
+    Vec3<float> resultColor = {0.f, 0.f, 0.f};
+    for(auto& lightSource: scene.getLightSources()){
+        Vec3<float> lightSourceDirection = normalize(hitPos - lightSource.getPosition());
+        Ray ray(lightSource.getPosition(), lightSourceDirection);
+        auto intersectionFromLight = findRayIntersection(scene.getMeshes(), ray).value();
+        if(intersectionFromLight.meshIndex == intersectionData.meshIndex && intersectionFromLight.triangleIndex == intersectionData.triangleIndex) {
+            Vec3<float> colorResponse = mesh.getMaterial().evaluateColorResponse(hitNormal, lightSourceDirection);
+            resultColor += colorResponse * lightSource.getIntensity();
+        }
+    }
+    return resultColor;
 }

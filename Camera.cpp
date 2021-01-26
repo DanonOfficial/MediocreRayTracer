@@ -10,13 +10,13 @@ Camera::Camera(const Vec3<float> &pos, const Vec3<float> &lookAt, const Vec3<flo
     float povInRadian = fov_m * static_cast<float>(M_PI) / 180.f;
     float halfHeight = tanf(povInRadian / 2.f) * distanceFromCameraToScreen;
     float halfWidth = halfHeight * aspectRatio_m;
-    u_m = cross(lookAt_m - pos_m, up);
-    normalize(u_m);
+    u_m = cross(up, pos_m - lookAt_m);
+    u_m.normalize();
+    v_m = cross(pos_m - lookAt_m, u_m);
+    v_m.normalize();
+    leftCorner_m = pos_m - halfWidth * u_m - halfHeight * v_m - normalize(pos_m - lookAt_m);
     u_m = 2.f * halfWidth * u_m;
-    v_m = cross(lookAt_m - pos_m, u_m);
-    normalize(v_m);
-    v_m = 2.f * halfWidth * v_m;
-    leftCorner_m = pos_m - halfWidth * u_m - halfHeight * v_m - normalize(lookAt_m - pos_m);
+    v_m = 2.f * halfHeight * v_m;
 }
 
 Ray Camera::castRay(float u, float v) const {

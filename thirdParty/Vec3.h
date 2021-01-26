@@ -32,11 +32,11 @@ public:
         init(v[0], v[1], v[2]);
     }
 
-    inline Vec3(const std::array<T, 3> &v) {
+    inline explicit Vec3(const std::array<T, 3> &v) {
         init(v[0], v[1], v[2]);
     }
 
-    ~Vec3() {}
+    ~Vec3() = default;
 
     inline T &operator[](int Index) {
         return (m_p[Index]);
@@ -188,8 +188,16 @@ public:
     /// Return length after normalization
     inline T normalize() {
         T l = length();
-        if (l == T(0.0))
-            return T(0.0);
+        if constexpr (!std::is_floating_point_v<T>){
+            if (l == T(0.0)) {
+                return T(0.0);
+            }
+        }else{
+            if (std::abs(l - T(0.0)) < std::numeric_limits<T>::epsilon()) {
+                return T(0.0);
+            }
+        }
+
         T invL = T(1.0) / l;
         m_p[0] *= invL;
         m_p[1] *= invL;
@@ -204,7 +212,7 @@ public:
                 // m_p[0] is minimum
                 u = Vec3(0, -m_p[2], m_p[1]);
             } else {
-                // m_p[2] is mimimum
+                // m_p[2] is minimum
                 u = Vec3(-m_p[1], m_p[0], 0);
             }
         } else {
@@ -213,7 +221,7 @@ public:
                 // m_p[1] is minimum
                 u = Vec3(m_p[2], 0, -m_p[0]);
             } else {
-                // m_p[2] is mimimum
+                // m_p[2] is minimum
                 u = Vec3(-m_p[1], m_p[0], 0);
             }
         }
@@ -297,7 +305,7 @@ inline Vec3<T> mix(const Vec3<T> &u, const Vec3<T> &v, float alpha) {
 }
 
 /**
- * Cartesion to polar coordinates conversion.
+ * Cartesian to polar coordinates conversion.
  * Result:
  * [0] = length
  * [1] = angle with z-axis
@@ -330,7 +338,7 @@ inline Vec3<T> cartesianToPolar(const Vec3<T> &v) {
 }
 
 /**
- * Polar to cartesion coordinates
+ * Polar to cartesian coordinates
  * input:
  * [0] = length
  * [1] = angle with z-axis

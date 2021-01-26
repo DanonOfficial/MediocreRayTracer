@@ -6,6 +6,7 @@
 #define RAYTRACER_MESH_H
 #include <vector>
 #include "thirdParty/Vec3.h"
+#include "Material.h"
 
 class Mesh {
 public:
@@ -19,10 +20,15 @@ public:
 
     const std::vector<Vec3<float>> &getNormals() const;
 
+    const Material& getMaterial() const;
+
+    void setMaterial(const Material &material);
+
 private:
     std::vector<Vec3<float>> vertices_m;
     std::vector<Vec3<size_t>> indices_m;
     std::vector<Vec3<float>> normals_m;
+    Material material_m;
     void calculateNormals();
 };
 

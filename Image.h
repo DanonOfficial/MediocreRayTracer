@@ -23,7 +23,7 @@ public:
     }
 
     Image(size_t width, size_t height, std::array<float, 3> color) : width_m(width), height_m(height),
-                                                                     image_m(width * height, color) {
+                                                                     image_m(width * height, Vec3(color)) {
 
     }
 
@@ -49,7 +49,7 @@ public:
                                      (to[2] - from[2]) / height_m};
 #pragma omp parallel default(none) shared(from, to, step)
         for (size_t i = 0; i < height_m; i++) {
-            std::array<float, 3> newColor = {from[0] + step[0] * i, from[1] + step[1] * i, from[2] + step[2] * i};
+            Vec3 newColor = {from[0] + step[0] * i, from[1] + step[1] * i, from[2] + step[2] * i};
 #pragma omp parallel default(none) shared(newColor, i)
             for (size_t j = 0; j < width_m; j++) {
                 image_m[i * width_m + j] = newColor;
@@ -57,9 +57,9 @@ public:
         }
     }
 
-    [[nodiscard]] size_t width() const { return width_m; }
+    size_t width() const { return width_m; }
 
-    [[nodiscard]] size_t height() const { return height_m; }
+    size_t height() const { return height_m; }
 
     const Vec3<float> &operator()(size_t x, size_t y) const { return image_m[y * width_m + x]; }
 

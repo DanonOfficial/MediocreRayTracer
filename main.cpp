@@ -18,14 +18,18 @@ int main(int argc, char *argv[]) {
     }
     Image image(width, height);
     //image.fillBackgroundWithGradient({1, 1, 1}, {0, 0, 1.f});
-    std::vector<Vec3<float>> vertices = {{0.0f, 0.0f, -1.f},
-                                         {1.f,  0.f,  -1.f},
-                                         {0.f,  1.f,  -1.f}};
-    std::vector<Vec3<size_t>> triangles = {{0, 1, 2}};
     Scene scene;
     Mesh meshForScene;
-    meshForScene.loadOFF("resources/model.off");
+    Material baseMaterial = {{1.f, 1.f, 1.f}, .5f};
+    meshForScene.loadOFF("resources/example.off");
+    meshForScene.setMaterial(baseMaterial);
+    Mesh ground;
+    ground.loadOFF("resources/ground.off");
+    ground.setMaterial(baseMaterial);
     scene.addMesh(meshForScene);
+    scene.addMesh(ground);
+    LightSource lightSource = {{2.f, 2.f, 2.f}, {1.f, 1.f, 1.f}, 1.f};
+    scene.addLightSource(lightSource);
     RayCaster renderer;
     renderer.render(scene, image);
     image.writeImage(path);
