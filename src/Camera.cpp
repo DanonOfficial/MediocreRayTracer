@@ -2,7 +2,7 @@
 //// Created by roundedglint585 on 1/23/21.
 ////
 //
-#include "Camera.h"
+#include "../include/Camera.h"
 
 Camera::Camera(const Vec3<float> &pos, const Vec3<float> &lookAt, const Vec3<float> &up, float aspectRatio,
                float fov) : pos_m(pos), lookAt_m(lookAt), up_m(up), aspectRatio_m(aspectRatio), fov_m(fov) {

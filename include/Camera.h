@@ -6,7 +6,7 @@
 #define RAYTRACER_CAMERA_H
 #pragma once
 
-#include "thirdParty/Vec3.h"
+#include "../thirdParty/Vec3.h"
 #include "Ray.h"
 class Camera {
 public:

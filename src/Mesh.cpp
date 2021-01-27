@@ -2,7 +2,7 @@
 // Created by roundedglint585 on 1/23/21.
 //
 
-#include "Mesh.h"
+#include "../include/Mesh.h"
 #include <fstream>
 void Mesh::loadOFF(const std::string &path) {
     std::ifstream file(path);

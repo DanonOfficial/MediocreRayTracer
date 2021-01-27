@@ -2,7 +2,7 @@
 // Created by roundedglint585 on 1/26/21.
 //
 
-#include "Material.h"
+#include "../include/Material.h"
 
 Material::Material(const Vec3<float> &albedo, float diffuseCoeff) : albedo_m(albedo),
                                                                     diffuseCoeff_m(diffuseCoeff) {}

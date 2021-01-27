@@ -4,7 +4,7 @@
 
 #ifndef RAYTRACER_MATERIAL_H
 #define RAYTRACER_MATERIAL_H
-#include "thirdParty/Vec3.h"
+#include "../thirdParty/Vec3.h"
 
 class Material {
 public:

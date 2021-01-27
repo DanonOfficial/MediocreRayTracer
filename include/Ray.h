@@ -5,7 +5,7 @@
 #ifndef RAYTRACER_RAY_H
 #define RAYTRACER_RAY_H
 
-#include "thirdParty/Vec3.h"
+#include "../thirdParty/Vec3.h"
 #include <optional>
 
 class Ray {

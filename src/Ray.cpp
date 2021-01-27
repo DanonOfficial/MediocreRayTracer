@@ -2,7 +2,7 @@
 // Created by roundedglint585 on 1/20/21.
 //
 
-#include "Ray.h"
+#include "../include/Ray.h"
 #include <optional>
 Ray::Ray(const Vec3<float> &originM, const Vec3<float> &directionM) : origin_m(originM), direction_m(directionM) {}
 

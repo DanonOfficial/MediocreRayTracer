@@ -6,7 +6,7 @@
 #define RAYTRACER_SCENE_H
 
 #include <vector>
-#include "thirdParty/Vec3.h"
+#include "../thirdParty/Vec3.h"
 #include "Camera.h"
 #include "Mesh.h"
 #include "LightSource.h"

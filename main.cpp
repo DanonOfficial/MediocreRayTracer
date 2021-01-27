@@ -1,8 +1,9 @@
 #include <iostream>
-#include "Image.h"
-#include "Scene.h"
-#include "RayCaster.h"
-#include "Mesh.h"
+#include "include/Image.h"
+#include "include/Scene.h"
+#include "include/RayCaster.h"
+#include "include/Mesh.h"
+#include "include/AreaLightSource.h"
 
 int main(int argc, char *argv[]) {
     size_t width, height;
@@ -28,7 +29,9 @@ int main(int argc, char *argv[]) {
     ground.setMaterial(baseMaterial);
     scene.addMesh(meshForScene);
     scene.addMesh(ground);
-    LightSource lightSource = {{2.f, 2.f, 2.f}, {1.f, 1.f, 1.f}, 1.f};
+    //(const Vec3<float> &position, const Vec3<float> &direction, const Vec3<float> &color, float intensity, float squareSize);
+    AreaLightSource lightSource =AreaLightSource({2.f, 2.f, 2.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, 1.f, 0.2f);
+
     scene.addLightSource(lightSource);
     RayCaster renderer;
     renderer.render(scene, image);

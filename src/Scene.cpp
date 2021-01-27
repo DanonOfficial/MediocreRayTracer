@@ -2,7 +2,7 @@
 // Created by roundedglint585 on 1/20/21.
 //
 
-#include "Scene.h"
+#include "../include/Scene.h"
 
 const Camera &Scene::getCamera() const {
     return camera_m;

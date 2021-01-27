@@ -5,7 +5,7 @@
 #ifndef RAYTRACER_MESH_H
 #define RAYTRACER_MESH_H
 #include <vector>
-#include "thirdParty/Vec3.h"
+#include "../thirdParty/Vec3.h"
 #include "Material.h"
 
 class Mesh {

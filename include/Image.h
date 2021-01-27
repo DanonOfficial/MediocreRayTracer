@@ -9,7 +9,7 @@
 #include <array>
 #include <fstream>
 #include <algorithm>
-#include "thirdParty/Vec3.h"
+#include "../thirdParty/Vec3.h"
 
 class Image {
 public:
