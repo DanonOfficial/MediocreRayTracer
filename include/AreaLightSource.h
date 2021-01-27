@@ -14,7 +14,7 @@ public:
     AreaLightSource(const Vec3<float> &position, const Vec3<float> &direction, const Vec3<float> &color,
                     float intensity, float squareSize);
 
-    const Vec3<float> getPosition() const override;
+    Vec3<float> getPosition() const override;
 
 private:
     Vec3<float> firstBasisVector_m, secondBasisVector_m;

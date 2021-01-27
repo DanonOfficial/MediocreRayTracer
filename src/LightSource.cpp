@@ -7,7 +7,7 @@
 LightSource::LightSource(const Vec3<float> &position, const Vec3<float> &color, float intensity) : position_m(
         position), color_m(color), intensity_m(intensity) {}
 
-const Vec3<float> LightSource::getPosition() const {
+Vec3<float> LightSource::getPosition() const {
     return position_m;
 }
 
