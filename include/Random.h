@@ -4,11 +4,14 @@
 
 #ifndef RAYTRACER_RANDOM_H
 #define RAYTRACER_RANDOM_H
+
 #include <random>
-namespace randomGenerator{
+
+namespace randomGenerator {
     static thread_local std::mt19937 generator;
+
     inline float floatRandom(const float min, const float max) {
-        std::uniform_real_distribution<float> distribution(min,max);
+        std::uniform_real_distribution<float> distribution(min, max);
         return distribution(generator);
     }
 }

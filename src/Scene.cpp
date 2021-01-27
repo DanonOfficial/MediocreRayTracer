@@ -16,9 +16,10 @@ void Scene::addMesh(const Mesh &mesh) {
     meshes_m.push_back(mesh);
 }
 
-const std::vector<LightSource> & Scene::getLightSources() const{
+const std::vector<LightSource> &Scene::getLightSources() const {
     return lightSources_m;
 }
-void Scene::addLightSource(const LightSource& lightSource){
+
+void Scene::addLightSource(const LightSource &lightSource) {
     lightSources_m.emplace_back(lightSource);
 }

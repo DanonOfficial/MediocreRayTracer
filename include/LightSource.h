@@ -4,6 +4,7 @@
 
 #ifndef RAYTRACER_LIGHTSOURCE_H
 #define RAYTRACER_LIGHTSOURCE_H
+
 #include "../thirdParty/Vec3.h"
 
 class LightSource {
