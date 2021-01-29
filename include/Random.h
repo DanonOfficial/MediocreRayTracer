@@ -6,6 +6,7 @@
 #define RAYTRACER_RANDOM_H
 
 #include <random>
+#include "Image.h"
 
 namespace randomGenerator {
     static thread_local std::mt19937 generator;
@@ -14,5 +15,6 @@ namespace randomGenerator {
         std::uniform_real_distribution<float> distribution(min, max);
         return distribution(generator);
     }
+
 }
 #endif //RAYTRACER_RANDOM_H

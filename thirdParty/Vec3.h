@@ -235,23 +235,17 @@ public:
 
     template<int I>
     auto &get() &{
-        if constexpr(I == 0) return m_p[0];
-        else if constexpr(I == 1) return m_p[1];
-        else if constexpr (I == 2) return m_p[2];
+        return m_p[I];
     }
 
     template<int I>
     auto &&get() &&{
-        if constexpr(I == 0) return std::move(m_p[0]);
-        else if constexpr(I == 1) return std::move(m_p[1]);
-        else if constexpr (I == 2) return std::move(m_p[2]);
+        return std::move(m_p[I]);
     }
 
     template<int I>
     auto const &get() const &{
-        if constexpr(I == 0) return m_p[0];
-        else if constexpr(I == 1) return m_p[1];
-        else if constexpr (I == 2) return m_p[2];
+        return m_p[I];
     }
 
 protected:

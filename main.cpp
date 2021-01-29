@@ -21,8 +21,9 @@ int main(int argc, char *argv[]) {
     //image.fillBackgroundWithGradient({1, 1, 1}, {0, 0, 1.f});
     Scene scene;
     Mesh meshForScene;
-    Material baseMaterial = {{1.f, 1.f, 1.f}, .5f};
-    meshForScene.loadOFF("resources/example.off");
+    Material baseMaterial = {{1.f, 1.f, 1.f}, .2f, 1.f, {0.1f, 0.1f, 0.1f}};
+    //const Vec3<float> &albedo, float diffuseCoeff, float roughness_m, Vec3<float> &refractionIndex
+    meshForScene.loadOFF("resources/ball.off");
     meshForScene.setMaterial(baseMaterial);
     Mesh ground;
     ground.loadOFF("resources/ground.off");
@@ -30,11 +31,11 @@ int main(int argc, char *argv[]) {
     scene.addMesh(meshForScene);
     scene.addMesh(ground);
     //(const Vec3<float> &position, const Vec3<float> &direction, const Vec3<float> &color, float intensity, float squareSize);
-    AreaLightSource lightSource =AreaLightSource({2.f, 2.f, 2.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, 1.f, 0.2f);
+    AreaLightSource lightSource = AreaLightSource({2.f, 2.f, 2.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, 1.f, 0.2f);
 
     scene.addLightSource(lightSource);
     RayCaster renderer;
-    renderer.render(scene, image);
+    renderer.render(scene, image, 16);
     image.writeImage(path);
     return 0;
 }

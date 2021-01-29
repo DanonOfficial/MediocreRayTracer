@@ -46,7 +46,7 @@ RayCaster::findRayIntersection(const std::vector<Mesh> &meshes, const Ray &ray) 
 }
 
 Vec3<float>
-RayCaster::shade(const Scene &scene, RayCaster::IntersectionData intersectionData, size_t sampleCount) const {
+RayCaster::shade(const Scene &scene, const Ray &ray, RayCaster::IntersectionData intersectionData, size_t sampleCount) const {
     auto &[meshIndex, triangleIndex, u, v, _] = intersectionData;
     const auto &mesh = scene.getMeshes()[meshIndex];
     const auto &vertices = mesh.getVertices();
@@ -56,7 +56,7 @@ RayCaster::shade(const Scene &scene, RayCaster::IntersectionData intersectionDat
     Vec3<float> hitPos = (1.f - u - v) * vertices[p0] + u * vertices[p1] + v * vertices[p2];
     Vec3<float> resultColor = {0.f, 0.f, 0.f};
     for (auto &lightSource: scene.getLightSources()) {
-        resultColor += sampleShadowColor(scene, lightSource, hitPos, hitNormal, meshIndex, triangleIndex, sampleCount);
+        resultColor += sampleShadowColor(scene, lightSource, hitPos, hitNormal, ray.getDirection(), meshIndex, triangleIndex, sampleCount);
     }
     return resultColor;
 }
@@ -75,7 +75,7 @@ RayCaster::sampleCameraPixel(const Scene &scene, const Image &image, size_t i, s
                                              randomGenerator::floatRandom(fromY, toY));
         if (auto intersection = findRayIntersection(scene.getMeshes(), ray)) {
             isThereAnyIntersection = true;
-            color += shade(scene, intersection.value());
+            color += shade(scene, ray, intersection.value());
         }
     }
     if (isThereAnyIntersection) {
@@ -86,17 +86,21 @@ RayCaster::sampleCameraPixel(const Scene &scene, const Image &image, size_t i, s
 }
 
 Vec3<float> RayCaster::sampleShadowColor(const Scene &scene, const LightSource &lightSource, const Vec3<float> &hitPos,
-                                         const Vec3<float> &hitNormal, size_t meshIndex, size_t triangleIndex,
+                                         const Vec3<float> &hitNormal, const Vec3<float> &rayDirection, size_t meshIndex, size_t triangleIndex,
                                          size_t sampleCount) const {
     Vec3<float> resultColor = {0.f, 0.f, 0.f};
     for (size_t i = 0; i < sampleCount; i++) {
-        Vec3<float> lightSourceDirection = normalize(hitPos - lightSource.getPosition());
-        Ray ray(lightSource.getPosition(), lightSourceDirection);
-        auto intersectionFromLight = findRayIntersection(scene.getMeshes(), ray).value();
-        if (intersectionFromLight.meshIndex == meshIndex && intersectionFromLight.triangleIndex == triangleIndex) {
-            Vec3<float> colorResponse = scene.getMeshes()[meshIndex].getMaterial().evaluateColorResponse(hitNormal,
-                                                                                                         lightSourceDirection);
-            resultColor += colorResponse * lightSource.getIntensity();
+        auto lightPosition = lightSource.getPosition();
+        Vec3<float> lightSourceDirection = normalize(hitPos - lightPosition);
+        Ray ray(lightPosition, lightSourceDirection);
+        if (auto intersectionFromLight = findRayIntersection(scene.getMeshes(), ray)) {
+            if (intersectionFromLight.value().meshIndex == meshIndex &&
+                intersectionFromLight.value().triangleIndex == triangleIndex) {
+                Vec3<float> colorResponse = scene.getMeshes()[meshIndex].getMaterial().evaluateColorResponse(hitNormal,
+                                                                                                             lightSourceDirection,
+                                                                                                             rayDirection);
+                resultColor += colorResponse * lightSource.getIntensity();
+            }
         }
     }
     resultColor = resultColor / sampleCount;

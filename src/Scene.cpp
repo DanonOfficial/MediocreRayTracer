@@ -3,6 +3,7 @@
 //
 
 #include "../include/Scene.h"
+#include "../include/AreaLightSource.h"
 
 const Camera &Scene::getCamera() const {
     return camera_m;
@@ -16,10 +17,10 @@ void Scene::addMesh(const Mesh &mesh) {
     meshes_m.push_back(mesh);
 }
 
-const std::vector<LightSource> &Scene::getLightSources() const {
+const std::vector<AreaLightSource> &Scene::getLightSources() const {
     return lightSources_m;
 }
 
-void Scene::addLightSource(const LightSource &lightSource) {
+void Scene::addLightSource(const AreaLightSource &lightSource) {
     lightSources_m.emplace_back(lightSource);
 }

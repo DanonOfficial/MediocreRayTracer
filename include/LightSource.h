@@ -11,6 +11,8 @@ class LightSource {
 public:
     LightSource(const Vec3<float> &position, const Vec3<float> &color, float intensity);
 
+    virtual ~LightSource() = default;
+
     virtual Vec3<float> getPosition() const;
 
     const Vec3<float> getColor() const;
