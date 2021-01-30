@@ -32,6 +32,7 @@ void Mesh::loadOFF(const std::string &path) {
             file >> index[0] >> index[1] >> index[2];
         }
         calculateNormals();
+        aabb_m = AABB(vertices_m);
     }
 }
 
@@ -67,4 +68,8 @@ void Mesh::setMaterial(const Material &material) {
 
 const Material &Mesh::getMaterial() const {
     return material_m;
+}
+
+const AABB &Mesh::getBoundingBox() const {
+    return aabb_m;
 }

@@ -8,10 +8,11 @@
 #include <vector>
 #include "../thirdParty/Vec3.h"
 #include "Material.h"
+#include "AABB.h"
 
 class Mesh {
 public:
-    Mesh() = default;
+    explicit Mesh() = default;
 
     void loadOFF(const std::string &path);
 
@@ -20,6 +21,8 @@ public:
     const std::vector<Vec3<size_t>> &getIndices() const;
 
     const std::vector<Vec3<float>> &getNormals() const;
+
+    const AABB &getBoundingBox() const;
 
     const Material &getMaterial() const;
 
@@ -30,7 +33,7 @@ private:
     std::vector<Vec3<size_t>> indices_m;
     std::vector<Vec3<float>> normals_m;
     Material material_m;
-
+    AABB aabb_m;
     void calculateNormals();
 };
 

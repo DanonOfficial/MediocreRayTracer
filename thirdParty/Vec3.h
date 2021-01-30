@@ -31,7 +31,11 @@ public:
     inline Vec3(const Vec3 &v) {
         init(v[0], v[1], v[2]);
     }
-
+    explicit Vec3(T p){
+        m_p[0] = p;
+        m_p[1] = p;
+        m_p[2] = p;
+    }
     inline explicit Vec3(const std::array<T, 3> &v) {
         init(v[0], v[1], v[2]);
     }

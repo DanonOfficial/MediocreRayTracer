@@ -4,7 +4,7 @@
 #include "include/RayCaster.h"
 #include "include/Mesh.h"
 #include "include/AreaLightSource.h"
-
+#include "include/WorleyNoise.h"
 int main(int argc, char *argv[]) {
     size_t width, height;
     std::string path;
@@ -32,10 +32,16 @@ int main(int argc, char *argv[]) {
     scene.addMesh(ground);
     //(const Vec3<float> &position, const Vec3<float> &direction, const Vec3<float> &color, float intensity, float squareSize);
     AreaLightSource lightSource = AreaLightSource({2.f, 2.f, 2.f}, {0.f, 0.f, 0.f}, {1.f, 1.f, 1.f}, 1.f, 0.2f);
-
     scene.addLightSource(lightSource);
     RayCaster renderer;
     renderer.render(scene, image, 16);
+//    randomGenerator::WorleyNoise<2> worley(50);
+//    for(size_t i = 0; i < width; i++){
+//        for(size_t j = 0; j < height; j++){
+//            float value = worley.getValue(float(i)/width, float(j)/height);
+//            image(j, i) = {value, value, value};
+//        }
+//    }
     image.writeImage(path);
     return 0;
 }
