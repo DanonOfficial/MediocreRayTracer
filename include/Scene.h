@@ -11,6 +11,7 @@
 #include "Mesh.h"
 #include "LightSource.h"
 #include "AreaLightSource.h"
+#include "BVH.h"
 
 class Scene {
 public:
@@ -26,10 +27,15 @@ public:
 
     void addLightSource(const AreaLightSource &lightSource);
 
+    void buildBVH();
+
 private:
     std::vector<Mesh> meshes_m;
     std::vector<AreaLightSource> lightSources_m;
     Camera camera_m;
+    BVH bvh;
+public:
+    const BVH &getBVH() const;
 };
 
 

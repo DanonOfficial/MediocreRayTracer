@@ -31,8 +31,8 @@ private:
                                   const Vec3<float> &hitNormal, const Vec3<float> &rayDirection, size_t meshIndex, size_t triangleIndex,
                                   size_t sampleCount = 8) const;
 
-    std::optional<IntersectionData> findRayIntersection(const std::vector<Mesh> &meshes, const Ray &ray) const;
-
+    std::optional<IntersectionData> findRayIntersection(const Scene& scene, const Ray &ray) const;
+    std::vector<BVH::triangleData> findRayIntersection(const BVH& bvh, const Ray &ray) const;
     Vec3<float> shade(const Scene &scene, const Ray &ray, IntersectionData intersectionData, size_t sampleCount = 8) const;
 };
 
