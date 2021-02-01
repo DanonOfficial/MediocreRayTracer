@@ -42,28 +42,6 @@ RayCaster::findRayIntersection(const Scene& scene, const Ray &ray) const {
             }
         }
     }
-    //std::cout << "test" << std::endl;
-    //std::cout << result.meshIndex << " " << result.triangleIndex << " " << result.u << " " << result.v << " " << result.t << " " << intersections.size() << std::endl;
-//    distance = std::numeric_limits<float>::max();
-//    hasIntersection = false;
-//    for (size_t meshIndex = 0; meshIndex < meshes.size(); meshIndex++) {
-//        if(meshes[meshIndex].getBoundingBox().rayIntersect(ray)) {
-//            const std::vector<Vec3<size_t>> &indices = meshes[meshIndex].getIndices();
-//            const std::vector<Vec3<float>> &vertices = meshes[meshIndex].getVertices();
-//            for (size_t i = 0; i < indices.size(); i++) {
-//                auto &[i0, i1, i2] = indices[i];
-//                if (auto intersection = ray.intersect(vertices[i0], vertices[i1], vertices[i2])) {
-//                    const auto &[u, v, t] = intersection.value();
-//                    if (std::fabs(t) < distance) {
-//                        hasIntersection = true;
-//                        distance = std::fabs(t);
-//                        result = {meshIndex, i, u, v, t};
-//                    }
-//                }
-//            }
-//        }
-//    }
-    //std::cout << result.meshIndex << " " << result.triangleIndex << " " << result.u << " " << result.v << " " << result.t << std::endl;
     if (!hasIntersection) {
         return std::nullopt;
     } else {

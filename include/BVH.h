@@ -27,7 +27,7 @@ private:
         std::unique_ptr<treeNode> right = nullptr;
     };
     void buildTree(const std::vector<Mesh> &meshes);
-    std::vector<std::unique_ptr<BVH::treeNode>> merge(std::vector<std::unique_ptr<treeNode>> &nodes);
+    std::vector<std::unique_ptr<BVH::treeNode>> merge(std::vector<std::unique_ptr<treeNode>> &&nodes);
     void getIntersection(const Ray &ray,const std::unique_ptr<treeNode> &node, std::vector<triangleData> &intersections) const;
 
     std::unique_ptr<treeNode> root_m;

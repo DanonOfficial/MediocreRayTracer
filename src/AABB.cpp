@@ -56,3 +56,7 @@ AABB AABB::combine(const AABB &aabb) const {
 AABB::AABB(const Vec3<float> &min, const Vec3<float> &max) :min(min), max(max) {
 
 }
+
+Vec3<float> AABB::middle() const {
+    return (min + max) / 2.f;
+}

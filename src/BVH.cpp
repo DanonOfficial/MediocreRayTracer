@@ -8,11 +8,12 @@ BVH::treeNode::treeNode(const std::vector<triangleData> &objects, const AABB &aa
 }
 
 
-std::vector<std::unique_ptr<BVH::treeNode>> BVH::merge(std::vector<std::unique_ptr<BVH::treeNode>> &nodes) {
+std::vector<std::unique_ptr<BVH::treeNode>> BVH::merge(std::vector<std::unique_ptr<BVH::treeNode>> &&nodes) {
+    //down-up building strategy
     std::vector<uint8_t> isUnited(nodes.size(), false);
     std::vector<std::unique_ptr<BVH::treeNode>> result;
     size_t nodesCountToProceed = nodes.size();
-    if(nodesCountToProceed % 2 == 1) {
+    if(nodesCountToProceed % 2 == 1) { // if there non even count of nodes, last one goes to the next level
         nodesCountToProceed--;
         isUnited.pop_back();
         result.push_back(std::move(nodes.back()));
@@ -62,7 +63,7 @@ void BVH::buildTree(const std::vector<Mesh> &meshes) {
         }
     }
     while(allTriangles.size() != 1){
-        allTriangles = merge(allTriangles);
+        allTriangles = merge(std::move(allTriangles));
     }
     root_m = std::move(allTriangles[0]);
 }
