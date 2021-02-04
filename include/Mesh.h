@@ -34,6 +34,7 @@ private:
     std::vector<Vec3<float>> normals_m;
     Material material_m;
     AABB aabb_m;
+
     void calculateNormals();
 };
 

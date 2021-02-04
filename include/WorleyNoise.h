@@ -20,6 +20,8 @@ namespace randomGenerator {
         template<typename ...Args>
         float getValue(Args ...args) const;
 
+        float getValue(const std::array<float, Dim> &point);
+
     private:
         float distance(const std::array<float, Dim> &first, const std::array<float, Dim> &second) const;
 
@@ -49,13 +51,18 @@ namespace randomGenerator {
     }
 
     template<size_t Dim>
-    template<typename... Args>
+    template<typename ...Args>
     float WorleyNoise<Dim>::getValue(Args... args) const {
         std::array<float, Dim> point = {args...};
+        return getValue(point);
+    }
+
+    template<size_t Dim>
+    float WorleyNoise<Dim>::getValue(const std::array<float, Dim> &point) {
         float closestDistance = std::numeric_limits<float>::max();
-        for (size_t i = 0; i < features_m.size(); i++) {
-            if (distance(point, features_m[i]) < closestDistance) {
-                closestDistance = distance(point, features_m[i]);
+        for (auto &feature: features_m) {
+            if (distance(point, feature) < closestDistance) {
+                closestDistance = distance(point, feature);
             }
         }
         return closestDistance;

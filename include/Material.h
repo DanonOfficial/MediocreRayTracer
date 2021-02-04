@@ -20,10 +20,13 @@ public:
 private:
 
     float specularD(const Vec3<float> &normal, const Vec3<float> &wi, const Vec3<float> &wo) const;
+
     float specularF(const Vec3<float> &wi, const Vec3<float> &wo) const;
+
     float specularG(const Vec3<float> &normal, const Vec3<float> &wi, const Vec3<float> &wo) const;
 
     Vec3<float> calculateHalfVector(const Vec3<float> &wi, const Vec3<float> &wo) const;
+
     Vec3<float> albedo_m = {};
     float diffuseCoeff_m = 0.f;
     float roughness_m = 0.5f;

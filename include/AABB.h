@@ -11,12 +11,19 @@
 class AABB {
 public:
     AABB() = default;
+
     explicit AABB(const std::vector<Vec3<float>> &vertices);
+
     AABB(const Vec3<float> &min, const Vec3<float> &max);
+
     bool rayIntersect(const Ray &ray) const;
+
     float getVolume() const;
+
     AABB combine(const AABB &aabb) const;
+
     Vec3<float> middle() const;
+
 private:
     Vec3<float> min, max;
 };

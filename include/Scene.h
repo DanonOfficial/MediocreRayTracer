@@ -29,13 +29,13 @@ public:
 
     void buildBVH();
 
+    const BVH &getBVH() const;
+
 private:
     std::vector<Mesh> meshes_m;
     std::vector<AreaLightSource> lightSources_m;
     Camera camera_m;
     BVH bvh;
-public:
-    const BVH &getBVH() const;
 };
 
 
